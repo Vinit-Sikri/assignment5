@@ -1,7 +1,8 @@
+// API service for Musicify using Redux Toolkit Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const shazamCoreApi = createApi({
-  reducerPath: 'shazamCoreApi',
+export const musicifyApi = createApi({
+  reducerPath: 'musicifyApi', // Changed name for uniqueness
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://shazam-core.p.rapidapi.com',
     prepareHeaders: (headers) => {
@@ -11,22 +12,23 @@ export const shazamCoreApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getTopCharts: builder.query({ query: () => '/v1/charts/world' }),
-    getSongsByGenre: builder.query({ query: (genre) => `/v1/charts/genre-world?genre_code=${genre.toUpperCase()}` }),
-    getSongsByCountry: builder.query({ query: (countryCode) => `/v1/charts/country?country_code=${countryCode}` }),
-    getSongsBySearch: builder.query({ query: (searchTerm) => `/v1/search/multi?search_type=SONGS_ARTISTS&query=${searchTerm}` }),
-    getArtistDetails: builder.query({ query: (artistId) => `/v2/artists/details?artist_id=${artistId}` }),
-    getSongDetails: builder.query({ query: ({ songid }) => `/v1/tracks/details?track_id=${songid}` }),
-    getSongRelated: builder.query({ query: ({ songid }) => `/v1/tracks/related?track_id=${songid}` }),
+    fetchTopCharts: builder.query({ query: () => '/v1/charts/world' }),
+    fetchSongsByGenre: builder.query({ query: (genre) => `/v1/charts/genre-world?genre_code=${genre.toUpperCase()}` }),
+    fetchSongsByCountry: builder.query({ query: (countryCode) => `/v1/charts/country?country_code=${countryCode}` }),
+    searchSongs: builder.query({ query: (searchTerm) => `/v1/search/multi?search_type=SONGS_ARTISTS&query=${searchTerm}` }),
+    fetchArtistDetails: builder.query({ query: (artistId) => `/v2/artists/details?artist_id=${artistId}` }),
+    fetchSongDetails: builder.query({ query: ({ songid }) => `/v1/tracks/details?track_id=${songid}` }),
+    fetchSongRelated: builder.query({ query: ({ songid }) => `/v1/tracks/related?track_id=${songid}` }),
   }),
 });
 
+// Exporting custom hooks for each endpoint
 export const {
-  useGetTopChartsQuery,
-  useGetSongsByGenreQuery,
-  useGetSongsByCountryQuery,
-  useGetSongsBySearchQuery,
-  useGetArtistDetailsQuery,
-  useGetSongDetailsQuery,
-  useGetSongRelatedQuery,
-} = shazamCoreApi;
+  useFetchTopChartsQuery,
+  useFetchSongsByGenreQuery,
+  useFetchSongsByCountryQuery,
+  useSearchSongsQuery,
+  useFetchArtistDetailsQuery,
+  useFetchSongDetailsQuery,
+  useFetchSongRelatedQuery,
+} = musicifyApi;
